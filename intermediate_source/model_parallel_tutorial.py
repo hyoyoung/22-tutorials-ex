@@ -7,16 +7,12 @@
 
 모델 병렬화는 분산 학습 기법에서 광범위하게 사용된다. 이전 포스트
 `DataParallel <https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html>`에서
-다중 GPU를 사용하여 신경망 네트워크 학습을 어떻게 하는지 설명하였다. 
+다중 GPU를 이용하여 신경망 네트워크 학습을 어떻게 하는지 설명하였다. 
+이 포스트에서는 모든 GPU에 동일한 모델을 복제하며 각 GPU는 서로다른 입력 데이터의 파티션을 받는다.   
+이러한 방법은 학습 과정을 가속시킬 수 있지만 모델이 너무 커서 단일 지피유에 맞지 않는 일부 사례에서는 작동하지 않는다. 
 
-Model parallel is widely-used in distributed training
-techniques. Previous posts have explained how to use
-`DataParallel <https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html>`_
-to train a neural network on multiple GPUs; this feature replicates the
-same model to all GPUs, where each GPU consumes a different partition of the
-input data. Although it can significantly accelerate the training process, it
-does not work for some use cases where the model is too large to fit into a
-single GPU. This post shows how to solve that problem by using **model parallel**,
+
+This post shows how to solve that problem by using **model parallel**,
 which, in contrast to ``DataParallel``, splits a single model onto different GPUs,
 rather than replicating the entire model on each GPU (to be concrete, say a model
 ``m`` contains 10 layers: when using ``DataParallel``, each GPU will have a
