@@ -1,13 +1,13 @@
-TorchScript for Deployment
+TorchScript를 통해 배포하기
 ==========================
 
-In this recipe, you will learn:
+이번 레시피를 통해 아래와 같은 것을 배울 수 있습니다.
 
--  What TorchScript is
--  How to export your trained model in TorchScript format
--  How to load your TorchScript model in C++ and do inference
+- TorchsScript의 개념
+- TorchScript 형식에 맞게 학습된 모델을 내보내는 법
+- C++에서 TorchScript 모델을 불러와 추론(inference)하는 법
 
-Requirements
+요구사항(Requirements)
 ------------
 
 -  PyTorch 1.5
@@ -15,31 +15,23 @@ Requirements
 -  libtorch 1.5
 -  C++ compiler
 
-The instructions for installing the three PyTorch components are
-available at `pytorch.org`_. The C++ compiler will depend on your
-platform.
+위의 세 가지 PyTorch components들을 설치하는 방법은 `pytorch.org`_에 나와있습니다. 
+C++ 컴파일러는 사용자의 플랫폼에 따라 달라집니다.
 
-What is TorchScript?
+TorchScript 소개
 --------------------
 
-**TorchScript** is an intermediate representation of a PyTorch model
-(subclass of ``nn.Module``) that can then be run in a high-performance
-environment like C++. It’s a high-performance subset of Python that is
-meant to be consumed by the **PyTorch JIT Compiler,** which performs
-run-time optimization on your model’s computation. TorchScript is the
-recommended model format for doing scaled inference with PyTorch models.
-For more information, see the PyTorch `Introduction to TorchScript
-tutorial`_, the `Loading A TorchScript Model in C++ tutorial`_, and the
-`full TorchScript documentation`_, all of which are available on
-`pytorch.org`_.
+**TorchScript** 는 C++ 같은 고성능 환경에서 실행할 수 있는 PyTorch 모델(``nn.Module``의 하위 클래스)의 중간 표현(intermediate representation)입니다.
+이는 모델 연산의 런타임 최적화를 실행하는 **PyTorch JIT Compiler** 에 의해 사용되는 Python의 고성능 subset입니다.
+TorchScript는 Pytorch 모델을 scalable한 추론을 위해 권장되는 모델 형식입니다.
+추가 정보를 위해서 `pytorch.org`_의 `TorchScript 튜토리얼 시작하기`_, `TorchScript 모델을 C++에서 불러오는 튜토리얼`_, `TorchScript 문서`_를 참고하세요.
 
-How to Export Your Model
+모델 내보내기
 ------------------------
 
-As an example, let’s take a pretrained vision model. All of the
-pretrained models in TorchVision are compatible with TorchScript.
+예시로 사전학습된 비전 모델을 가져와 보겠습니다. 모든 사전학습된 TorchVision 모델들은 TorchScript에서 사용할 수 있습니다.
 
-Run the following Python 3 code, either in a script or from the REPL:
+아래의 Python3 코드를 스크립트나 REPL로 실행해보세요.
 
 .. code:: python3
 
@@ -51,7 +43,7 @@ Run the following Python 3 code, either in a script or from the REPL:
    r18_scripted = torch.jit.script(r18)         # *** This is the TorchScript export
    dummy_input = torch.rand(1, 3, 224, 224)     # We should run a quick test
 
-Let’s do a sanity check on the equivalence of the two models:
+빠진 것이 있는지 두 모델의 동등성을 검사하겠습니다.:
 
 ::
 
@@ -64,7 +56,7 @@ Let’s do a sanity check on the equivalence of the two models:
    print('Python model top 5 results:\n  {}'.format(unscripted_top5))
    print('TorchScript model top 5 results:\n  {}'.format(scripted_top5))
 
-You should see that both versions of the model give the same results:
+두 가지의 버전의 모델 모두 같은 결과가 나오는 것을 볼 수 있습니다.:
 
 ::
 
@@ -73,13 +65,13 @@ You should see that both versions of the model give the same results:
    TorchScript model top 5 results:
      tensor([[463, 600, 731, 899, 898]])
 
-With that check confirmed, go ahead and save the model:
+체크가 완료되었으니 모델을 저장하겠습니다.:
 
 ::
 
    r18_scripted.save('r18_scripted.pt')
 
-Loading TorchScript Models in C++
+C++에서 TorchScript 모델 불러오기
 ---------------------------------
 
 Create the following C++ file and name it ``ts-infer.cpp``:
