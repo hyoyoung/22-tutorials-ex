@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Single-Machine Model Parallel Best Practices
+단일 컴퓨터의 모델 병렬화 우수 사례 
 ================================
-**Author**: `Shen Li <https://mrshenli.github.io/>`_
+**Author**: `Shen Li <https://mrshenli.github.io/>`
+**번역자**: '이동환 <dhlee.work@gmail.com>'
+
+모델 병렬화는 분산 학습 기법에서 광범위하게 사용된다. 이전 포스트
+`DataParallel <https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html>`에서
+다중 GPU를 사용하여 신경망 네트워크 학습을 어떻게 하는지 설명하였다. 
 
 Model parallel is widely-used in distributed training
 techniques. Previous posts have explained how to use
