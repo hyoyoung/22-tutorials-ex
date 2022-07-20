@@ -1,4 +1,4 @@
-UsiColab에서 Google Drive의 Tutorial Data 사용하기
+Colab에서 Google Drive의 Tutorial Data 사용하기
 ==============================================
 
 사용자가 Google Colab의 튜토리얼과 관련된 노트북을 열 수 있도록
