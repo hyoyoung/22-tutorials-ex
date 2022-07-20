@@ -4,40 +4,57 @@ What is `torch.nn` *really*?
 ============================
 by Jeremy Howard, `fast.ai <https://www.fast.ai>`_. Thanks to Rachel Thomas and Francisco Ingham.
 """
+#`torch.nn` 은 *확실하게* 어떤것인가요?
+
 ###############################################################################
 # We recommend running this tutorial as a notebook, not a script. To download the notebook (.ipynb) file,
 # click the link at the top of the page.
+#이 튜토리얼은 스크립트가 아닌 노트북으로 실행하기를 권장합니다. 
+#노트북(.ipynb) 파일을 다운받으시려면, 페이지의 상단을 클릭하여 다운로드 받을 수 있습니다.
 #
 # PyTorch provides the elegantly designed modules and classes `torch.nn <https://pytorch.org/docs/stable/nn.html>`_ ,
 # `torch.optim <https://pytorch.org/docs/stable/optim.html>`_ ,
 # `Dataset <https://pytorch.org/docs/stable/data.html?highlight=dataset#torch.utils.data.Dataset>`_ ,
 # and `DataLoader <https://pytorch.org/docs/stable/data.html?highlight=dataloader#torch.utils.data.DataLoader>`_
 # to help you create and train neural networks.
+# PyTorch는 신경망(neural network)들을 생성 및 학습시키는 것을 도와주기 위해서 `torch.nn <https://pytorch.org/docs/stable/nn.html>`_ , `torch.optim <https://pytorch.org/docs/stable/optim.html>`_ , `Dataset <https://pytorch.org/docs/stable/data.html?highlight=dataset#torch.utils.data.Dataset>`_ , `DataLoader <https://pytorch.org/docs/stable/data.html?highlight=dataloader#torch.utils.data.DataLoader>`_과 같은 잘 디자인된 모듈과 클래스들을 제공합니다. 
 # In order to fully utilize their power and customize
 # them for your problem, you need to really understand exactly what they're
-# doing. To develop this understanding, we will first train basic neural net
-# on the MNIST data set without using any features from these models; we will
-# initially only use the most basic PyTorch tensor functionality. Then, we will
+# doing. 
+# 여러분의 문제상황에서 성능을 최대한 사용하고 커스터마이즈 하기 위해서는, 어떻게 정확하게 동작하는지 확실하게 이해할 필요가 있습니다.
+# To develop this understanding, we will first train basic neural net
+# on the MNIST data set without using any features from these models; 
+# 이해를 발전시키기 위해 모델의 어떤 특징도 사용하지 않고 MNIST 데이터 셋에서 기본적인 신경망을 학습시켜 보겠습니다;
+# we will initially only use the most basic PyTorch tensor functionality. 
+# 처음에는 가장 기본적인 PyTorch 텐서 함수만을 사용하겠습니다.
+# Then, we will
 # incrementally add one feature from ``torch.nn``, ``torch.optim``, ``Dataset``, or
 # ``DataLoader`` at a time, showing exactly what each piece does, and how it
 # works to make the code either more concise, or more flexible.
+# 그리고나서 ``torch.nn``, ``torch.optim``, ``Dataset``, 또는``DataLoader``에서 하나의 feature를 점차 추가하여 각 부분이 어떤 역할을 하는지 그리고 이것이 어떻게 코드를 보다 간결하게 또는 보다 유연하게 만드는지를 보여줄 것입니다.
 #
 # **This tutorial assumes you already have PyTorch installed, and are familiar
 # with the basics of tensor operations.** (If you're familiar with Numpy array
 # operations, you'll find the PyTorch tensor operations used here nearly identical).
+# **이 튜토리얼은 여러분이 PyTorch가 설치되있고 기본 텐서(tensor) 연산에 익숙하다고 가정합니다. ** (Numpy 배열 연산이 익숙하시다면, 여기에서 사용되는 PyTorch 텐서 연산도 거의 동일하다는 것을 알게될 것입니다.)
 #
 # MNIST data setup
+# MNIST 데이터 설정
 # ----------------
 #
 # We will use the classic `MNIST <http://deeplearning.net/data/mnist/>`_ dataset,
 # which consists of black-and-white images of hand-drawn digits (between 0 and 9).
+# 손으로 쓴 숫자의 (0부터 9까지) 흑백이미지로 구성된 기본 `MNIST <http://deeplearning.net/data/mnist/>` 데이터셋을 사용합니다.
 #
 # We will use `pathlib <https://docs.python.org/3/library/pathlib.html>`_
 # for dealing with paths (part of the Python 3 standard library), and will
 # download the dataset using
-# `requests <http://docs.python-requests.org/en/master/>`_. We will only
+# `requests <http://docs.python-requests.org/en/master/>`_. 
+# 경로를 다루기 위해 `pathlib <https://docs.python.org/3/library/pathlib.html>`_를 사용하고(Python3의 표준 라이브러리의 일부분), 그리고 데이터를 다운로드하는데 `requests <http://docs.python-requests.org/en/master/>`_를 사용합니다.
+# We will only
 # import modules when we use them, so you can see exactly what's being
 # used at each point.
+# 모듈을 사용할 때만 임포트(import) 할 것이므로, 각각의 지점에서 정확히 어떤 모듈이 사용되는지 볼 수 있습니다.
 
 from pathlib import Path
 import requests
