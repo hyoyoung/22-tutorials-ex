@@ -1,53 +1,48 @@
-Learning PyTorch with Examples
+예제로 배우는 파이토치(PyTorch)
 ******************************
 **Author**: `Justin Johnson <https://github.com/jcjohnson/pytorch-examples>`_
+**번역**: `심형준`
 
-.. Note::
-	This is one of our older PyTorch tutorials. You can view our latest
-	beginner content in 
-	`Learn the Basics <https://pytorch.org/tutorials/beginner/basics/intro.html>`_.
+.. 메모::
+	이 문서는 오래된 파이토치 튜토리얼 중 하나입니다. 입문자를 위한 최신 문서는 
+	`기초 익히기 <https://pytorch.org/tutorials/beginner/basics/intro.html>`_에서 보실 수 있습니다.
 
-This tutorial introduces the fundamental concepts of
-`PyTorch <https://github.com/pytorch/pytorch>`__ through self-contained
-examples.
+이 튜토리얼은 `파이토치(PyTorch) <https://github.com/pytorch/pytorch>`_의 핵심적인 개념을 
+예제를 통해 소개합니다.
 
-At its core, PyTorch provides two main features:
+파이토치(PyTorch)는 핵심적으로 두 가지 주요 기능을 제공합니다.:
 
-- An n-dimensional Tensor, similar to numpy but can run on GPUs
-- Automatic differentiation for building and training neural networks
+- 넘파이(NumPy)와 유사하지만 GPU에서 실행할 수 있는 n-차원 텐서(Tensor)
+- 신경망 구축 및 학습을 위한 자동 미분(Automatic differentiation) 
+지금부터 3차 다항식(third order polynomial)을 이용해 :math:`y=\sin(x)` 에 근사(fit)하는 예제를 다뤄보겠습니다.
+The network will have four parameters, and will be trained with
+신경망은 4개의 파라미터(parameters)를 가지며, 정답과 신경망의 예측치 사이의 유클리드 거리(Euclidean distance)를 최소화해 임의의 값을 근사할 수 있도록
+경사하강법(gradient descent)을 이용해 학습하겠습니다.
 
-We will use a problem of fitting :math:`y=\sin(x)` with a third order polynomial
-as our running example. The network will have four parameters, and will be trained with
-gradient descent to fit random data by minimizing the Euclidean distance
-between the network output and the true output.
+.. 메모::
+	각 예제들은
+	:ref:`end of this page <examples-download>`에서 살펴볼 수 있습니다.
 
-.. Note::
-	You can browse the individual examples at the
-	:ref:`end of this page <examples-download>`.
-
-.. contents:: Table of Contents
+.. contents:: 목차
 	:local:
 
-Tensors
+텐서(Tensors)
 =======
 
-Warm-up: numpy
+워밍업: 넘파이(NumPy)
 --------------
 
-Before introducing PyTorch, we will first implement the network using
-numpy.
+PyTorch를 소개하기 전에, NumPy를 이용하여 신경망을 구현해 보겠습니다.
 
-Numpy provides an n-dimensional array object, and many functions for
-manipulating these arrays. Numpy is a generic framework for scientific
-computing; it does not know anything about computation graphs, or deep
-learning, or gradients. However we can easily use numpy to fit a
-third order polynomial to sine function by manually implementing the forward
-and backward passes through the network using numpy operations:
+NumPy는 n-차원 배열 객체와 이러한 배열들을 조작하기 위한 다양한 함수를 제공합니다. Numpy는 과학 분야의 연산을 위한 
+일반적인 프레임워크(framework)입니다; NumPy는 연산 그래프(computation graphs), 딥러닝, 경사(gradients)는 다루지 않습니다.
+그러나 NumPy 연산을 사용하여 신경망의 순전파와 역전파를 수동으로 구현함으로써, 3차 다항식이 sine 함수에
+근사하도록 만들 수 있습니다.
 
 .. includenodoc:: /beginner/examples_tensor/polynomial_numpy.py
 
 
-PyTorch: Tensors
+파이토치(PyTorch): 텐서(Tensors)
 ----------------
 
 Numpy is a great framework, but it cannot utilize GPUs to accelerate its
@@ -77,7 +72,7 @@ and backward passes through the network:
 Autograd
 ========
 
-PyTorch: Tensors and autograd
+파이토치(PyTorch): 텐서(Tensors)와 autograd
 -------------------------------
 
 In the above examples, we had to manually implement both the forward and
@@ -106,7 +101,7 @@ implement the backward pass through the network:
 
 .. includenodoc:: /beginner/examples_autograd/polynomial_autograd.py
 
-PyTorch: Defining new autograd functions
+파이토치(PyTorch): 새로운 autograd 함수 정의하기
 ----------------------------------------
 
 Under the hood, each primitive autograd operator is really two functions
@@ -133,10 +128,10 @@ our model:
 
 .. includenodoc:: /beginner/examples_autograd/polynomial_custom_function.py
 
-`nn` module
+`nn` 모듈(module)
 ===========
 
-PyTorch: nn
+파이토치(PyTorch): nn
 -----------
 
 Computational graphs and autograd are a very powerful paradigm for
@@ -167,7 +162,7 @@ network:
 
 .. includenodoc:: /beginner/examples_nn/polynomial_nn.py
 
-PyTorch: optim
+파이토치(PyTorch): optim
 --------------
 
 Up to this point we have updated the weights of our models by manually
@@ -186,7 +181,7 @@ by the ``optim`` package:
 
 .. includenodoc:: /beginner/examples_nn/polynomial_optim.py
 
-PyTorch: Custom nn Modules
+파이토치(PyTorch): 사용자 정의 nn.Modules
 --------------------------
 
 Sometimes you will want to specify models that are more complex than a
@@ -200,7 +195,7 @@ subclass:
 
 .. includenodoc:: /beginner/examples_nn/polynomial_module.py
 
-PyTorch: Control Flow + Weight Sharing
+파이토치(PyTorch): 흐름 제어(Control Flow) + 가중치 공유(Weight Sharing)
 --------------------------------------
 
 As an example of dynamic graphs and weight sharing, we implement a very
@@ -219,12 +214,12 @@ We can easily implement this model as a Module subclass:
 
 .. _examples-download:
 
-Examples
+예제
 ========
 
 You can browse the above examples here.
 
-Tensors
+텐서(Tensors)
 -------
 
 .. toctree::
