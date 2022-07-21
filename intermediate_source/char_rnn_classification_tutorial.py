@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-NLP From Scratch: Classifying Names with a Character-Level RNN
+밑바닥부터 시작하는 자연어처리: 문자 단위 순환신경망을 이용한 이름 분류
 **************************************************************
-**Author**: `Sean Robertson <https://github.com/spro/practical-pytorch>`_
+**저자**: `숀 로버트슨 <https://github.com/spro/practical-pytorch>`_
 
-We will be building and training a basic character-level RNN to classify
-words. This tutorial, along with the following two, show how to do
-preprocess data for NLP modeling "from scratch", in particular not using
-many of the convenience functions of `torchtext`, so you can see how
-preprocessing for NLP modeling works at a low level.
+단어를 분류하는 기본적인 문자 단위 순환신경망을 구현하고 학습할 예정입니다.
+이어지는 두 차례의 튜토리얼과 더불어, 이번 튜토리얼에서는
+자연어처리 모델링에서 전처리가 어떻게 이루어지는지 낮은 레벨에서 확인할 수 있도록
+'torchtext'에서 제공하는 편리한 기능들을 사용하지 않고 자연어처리
+모델링을 위해서 데이터를 전처리하는 방법을 "밑바닥에서부터" 소개합니다.
 
-A character-level RNN reads words as a series of characters -
-outputting a prediction and "hidden state" at each step, feeding its
-previous hidden state into each next step. We take the final prediction
-to be the output, i.e. which class the word belongs to.
+단어 단위 순환신경망은 일련의 문자들을 단어로 읽고 이전 은닉 상태를 다음 단계로 입력하여,
+각 단계에서 예측한 내용과 은닉 상태를 출력합니다.
+즉, 단어가 어떤 클래스에 속하는지를 최종적인 예측값으로 출력하게 됩니다.
 
-Specifically, we'll train on a few thousand surnames from 18 languages
-of origin, and predict which language a name is from based on the
-spelling:
+구체적으로, 18개의 언어에 기원을 둔 몇 천 개의 성으로 학습하여
+철자를 기반으로 이름이 어떤 언어로부터 유래되었는지 예측합니다.
 
 ::
 
