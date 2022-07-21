@@ -7,7 +7,7 @@ Colab에서 Google Drive의 튜토리얼 데이터 사용하기
 데이터를 복사해야할 수도 있습니다.
 
 이번 예제에서, 챗봇 튜토리얼을 Colab에서 동작하도록 변경하는 방법을 설명하겠습니다.
-이를 위해서, 먼저 Goggle Drive에 로그인해야 합니다.
+이를 위해서, 먼저 Google Drive에 로그인해야 합니다.
 (Colab의 데이터에 접근하는 방법에 대해 자세히 알고싶다면,
 `여기 <https://colab.research.google.com/notebooks/io.ipynb#scrollTo=XDg9OBaYqRMd>`__
 에서 예제 노트북을 통해 볼 수 있습니다.)
