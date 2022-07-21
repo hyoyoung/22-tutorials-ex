@@ -64,7 +64,7 @@ print("Torchvision Version: ",torchvision.__version__)
 # 입력
 # ------
 # 
-# Here are all of the parameters to change for the run. We will use the
+# 여기, 동작을 위해 바꾸어야 할 모든 파라미터들을 소개한다. We will use the
 # *hymenoptera_data* dataset which can be downloaded
 # `here <https://download.pytorch.org/tutorial/hymenoptera_data.zip>`__.
 # This dataset contains two classes, **bees** and **ants**, and is
