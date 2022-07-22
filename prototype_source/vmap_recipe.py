@@ -1,41 +1,39 @@
 """
 torch.vmap
 ==========
-This tutorial introduces torch.vmap, an autovectorizer for PyTorch operations.
-torch.vmap is a prototype feature and cannot handle a number of use cases;
-however, we would like to gather use cases for it to inform the design. If you
-are considering using torch.vmap or think it would be really cool for something,
-please contact us at https://github.com/pytorch/pytorch/issues/42368.
+이 튜토리얼에서는 PyTorch 작업을 위한 자동 벡터라이저인 torch.vmap을 소개합니다. 
+torch.vmap은 프로토타입 기능이기 때문에 많은 사용 사례를 처리할 수 없지만, 
+디자인을 알리기 위해 사용 사례를 수집하고자 합니다. torch.vmap 사용을 
+고려 중이거나 정말 멋진 것이라고 생각한다면
+https://github.com/pytorch/pytorch/issues/42368으로 문의하세요.
 
-So, what is vmap?
------------------
-vmap is a higher-order function. It accepts a function `func` and returns a new
-function that maps `func` over some dimension of the inputs. It is highly
-inspired by JAX's vmap.
+vmap이 뭔가요?
+--------------
+vmap은 고차 함수입니다. 함수 `func` 를 받고, 입력의 일부 차원에 `func` 를 매핑하는 
+새로운 함수를 반환합니다. JAX의 vmap에서 크게 영감을 받았습니다.
 
-Semantically, vmap pushes the "map" into PyTorch operations called by `func`,
-effectively vectorizing those operations.
+의미적으로 vmap은 `func` 에 의해 호출된 PyTorch 작업에 "map"을 푸시하여 해당 
+작업을 효과적으로 벡터화합니다.
 """
 import torch
-# NB: vmap is only available on nightly builds of PyTorch.
-# You can download one at pytorch.org if you're interested in testing it out.
+# NB: vmap은 PyTorch의 nightly 빌드 버전에서만 사용할 수 있습니다. 
+# 테스트하고 싶다면 pytorch.org에서 다운로드할 수 있습니다.
 from torch import vmap
 
 ####################################################################
-# The first use case for vmap is making it easier to handle
-# batch dimensions in your code. One can write a function `func`
-# that runs on examples and then lift it to a function that can
-# take batches of examples with `vmap(func)`. `func` however
-# is subject to many restrictions:
+# vmap의 첫 번째 사용 사례는 코드에서 배치 차원을 더 쉽게 처리할 수 있도록
+# 하는 것입니다. 예제에서처럼 함수 `func` 를 작성한 후, `vmap(func)` 와 같이
+# 일괄 처리 함수로 사용할 수 있습니다. 그러나 `func` 에는 많은 제한이 있습니다.
 #
-# - it must be functional (one cannot mutate a Python data structure
-#   inside of it), with the exception of in-place PyTorch operations.
-# - batches of examples must be provided as Tensors. This means that
-#   vmap doesn't handle variable-length sequences out of the box.
+# - 내부 PyTorch 작업을 제외하고 기능적이어야 합니다(Python 데이터 구조를 변경할
+#   수 없음).
 #
-# One example of using `vmap` is to compute batched dot products. PyTorch
-# doesn't provide a batched `torch.dot` API; instead of unsuccessfully
-# rummaging through docs, use `vmap` to construct a new function:
+# - 배치는 반드시 Tensor로 제공되어야 합니다. 즉, vmap은 가변 길이 시퀀스를 즉시 
+#   처리하지 않습니다.
+#
+# `vmap` 을 사용하는 한 가지 예는 내적을 배치로 계산하는 것입니다. PyTorch는 배치된 
+# `torch.dot` API를 제공하지 않습니다. 문서를 헤매는 대신 `vmap` 을 사용하여 새로운
+# 함수를 구성하세요.
 
 torch.dot                            # [D], [D] -> []
 batched_dot = torch.vmap(torch.dot)  # [N, D], [N, D] -> [N]
