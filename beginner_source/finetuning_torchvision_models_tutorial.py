@@ -15,19 +15,19 @@ Finetuning Torchvision Models
 # `torchvision models <https://pytorch.org/docs/stable/torchvision/models.html>`__
 # 에서 특징을 추출하는 방법에 대하여 자세히 알아볼 것입니다.
 # 이 튜토리얼은 몇 개의 현대적인 CNN 구조들을 활용하는 방법들에 대한 깊이 있는 시각을 제공해줄 것이며,
-# 파이토치 모델을 미세조정(finetuning) 하기 위한 직관을 키워줄 것입니다. 
+# 파이토치 모델을 미세조정 하기 위한 직관을 키워줄 것입니다. 
 # 각 모델 구조가 다르기 때문에, 
-# 모든 상황에서 활용이 가능한 미세 조정(finetuning) 표준 코드가 존재하지 않았습니다. 그렇기 때문에, 
+# 모든 상황에서 활용이 가능한 미세 조정 표준 코드가 존재하지 않았습니다. 그렇기 때문에, 
 # 연구자들은 반드시 존재하는 구조에 맞춘 조정을 해야 했습니다. 
 # 
 # 이 문서에서는 두 가지 타입의 전이 학습(transfer learning)을 소개할 것입니다: 
-# 미세조정(finetuning)과 특징 추출(feature extraction)입니다.
-# **미세조정(finetuning)** 은 새로운 과제를 위하여  
+# 미세조정과 특징 추출(feature extraction)입니다.
+# **미세조정** 은 새로운 과제를 위하여  
 # 사전 학습된 모델의 모든 파라미터들을 업데이트 합니다.
 # 즉, 전체 모델을 다시 학습시킵니다. 
-# **특징 추출(feature extraction)** 은
+# **특징 추출** 은
 # 예측할 때 사전학습된 모델에서 가장 마지막 층의 가중치만 업데이트시킵니다. 
-# 이것이 특징 추출(feature extraction)이라 불리는 이유는 
+# 이것이 특징 추출이라 불리는 이유는 
 # 사전 학습된 CNN 모델을 고정된 특징 추출기로서 사용하기 때문이며, 
 # 출력 계층만 변화시키기 때문입니다. 
 # 전이 학습에 대한 기술적인 정보가 더 필요하다면
@@ -37,8 +37,8 @@ Finetuning Torchvision Models
 # 일반적으로 전이학습 방법은 다음과 같은 과정을 따릅니다: 
 # 
 # -  사전학습된 모델을 초기화(initialize) 시킵니다. 
-# -  새로운 데이터셋에서의 클래스의 개수와 출력의 개수가 동일하도록 마지막 계층을
-#    reshape 시킵니다.
+# -  새로운 데이터셋에서의 클래스의 개수와 출력의 개수가 동일하도록 마지막 계층의 크기를
+#    재설정합니다.
 # -  학습을 시키는 동안 어떤 매개변수를 업데이트 시킬지에 따라 
 #    최적화 알고리즘을 정의합니다.
 # -  학습을 시킵니다. 
@@ -64,7 +64,7 @@ print("Torchvision Version: ",torchvision.__version__)
 # 입력
 # ------
 # 
-# 여기, 동작을 위해 바꾸어야 할 모든 파라미터들을 소개한다. We will use the
+# 여기, 동작을 위해 바꾸어야 할 모든 매개변수들을 소개합니다. We will use the
 # *hymenoptera_data* dataset which can be downloaded
 # `here <https://download.pytorch.org/tutorial/hymenoptera_data.zip>`__.
 # This dataset contains two classes, **bees** and **ants**, and is
