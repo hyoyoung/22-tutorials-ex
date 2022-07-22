@@ -24,7 +24,7 @@ MNIST 데이터 준비
 ----------------
 
 손으로 쓴 숫자의 (0부터 9까지) 흑백이미지로 구성된 기본 `MNIST <http://deeplearning.net/data/mnist/>`_ 데이터셋을 사용합니다.
-경로를 설정하기 위해 `pathlib <https://docs.python.org/3/library/pathlib.html>`_ 를 사용하고(Python3의 표준 라이브러리의 일부), 그리고 데이터를 다운로드하는데 `requests <http://docs.python-requests.org/en/master/>`_ 를 사용합니다.
+경로를 설정하기 위해 `pathlib <https://docs.python.org/3/library/pathlib.html>`_ 를 사용하고(Python3의 표준 라이브러리의 일부), 데이터를 다운로드하는데 `requests <http://docs.python-requests.org/en/master/>`_ 를 사용합니다.
 모듈을 사용할 때만 임포트(import) 할 것이므로, 각각의 지점에서 정확히 어떤 모듈이 사용되는지 볼 수 있습니다.
 """
 
