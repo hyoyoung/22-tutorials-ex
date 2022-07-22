@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-NLP From Scratch: Generating Names with a Character-Level RNN
+NLP From Scratch: Generating Names with a Character-Level RNNS
+스크래치에서의 NLP: 글자수준의 RNN 이름 생성하기
 *************************************************************
 **Author**: `Sean Robertson <https://github.com/spro/practical-pytorch>`_
+**저자**: '션 로버트슨'<https://github.com/spro/practival-pytorch>'_
 
 This is our second of three tutorials on "NLP From Scratch".
+이것은 "스크래치에서의 NLP"의 세 번째 튜토리얼 중 두번째이다. 
+
 In the `first tutorial </intermediate/char_rnn_classification_tutorial>`
+'첫 번째 튜토리얼에서 </intermediate/char_rnn_classification_tutorial>'
 we used a RNN to classify names into their language of origin. This time
+우리는 고유한 언어의 이름 분류기로써 RNN을 사용하였다. 이번에는 
 we'll turn around and generate names from languages.
+언어에서유사한 이름을 생성하는 것을 만들어볼 것이다.
 
 ::
 
@@ -38,30 +45,51 @@ Recurrently predicting characters to form language (this could also be
 done with words or other higher order constructs) is often referred to
 as a "language model".
 
+우리는 여전히 몇가지 선형 레이어에서 수제(hand-crafting)의 작은규모 RNN에 있다. 차이는,
+이름의 전체 글자에서 카테고리를 예측하는것을 대신해서, 하나의 카테고리와 하나의 글자를 동시에 입력한다.
+최근에 정형화된 언어에서의 글자를 예측하는 것은(이것은 단어 또는 고차원의 주문구조와 함께 진행될 것이다)
+종종 "언어 모델"로써 우리에게 언급된다. 
+
+
 **Recommended Reading:**
+** 추천할만한 읽을거리**
 
 I assume you have at least installed PyTorch, know Python, and
 understand Tensors:
+당신이 적어도 파이토치를 설치하고, 파이썬을 알며, 텐서를 이해한다고 가정한다. 
 
 -  https://pytorch.org/ For installation instructions
+-  https://pytorch.org/ 설치를 위한 가이드 
 -  :doc:`/beginner/deep_learning_60min_blitz` to get started with PyTorch in general
+-  :doc:'/beginner/deep_learning_60min_blitz' 일반적으로 파이토치를 시작하기 위해서
 -  :doc:`/beginner/pytorch_with_examples` for a wide and deep overview
+-  :doc:'/beinner/pytorch_with_examples' 넓고 깊은 개요(overview)를 위해 
 -  :doc:`/beginner/former_torchies_tutorial` if you are former Lua Torch user
+-  :doc:'/beginner/former_torchies_tutorial' 만일 당신이 이전 Lua Torch의 유저였다면
 
 It would also be useful to know about RNNs and how they work:
+또한, 아래 내용은 RNN과 어떻게 작동하는지 알기위한 유용한 정보가 될것이다. 
 
 -  `The Unreasonable Effectiveness of Recurrent Neural
    Networks <https://karpathy.github.io/2015/05/21/rnn-effectiveness/>`__
    shows a bunch of real life examples
+- '순환 신경망의 불합리한 효과' 
+   Networks <https://karpathy.github.io/2015/05/21/rnn-effectiveness/>`__
+   실제 사례의 일부를 보여준다. 
+   
 -  `Understanding LSTM
    Networks <https://colah.github.io/posts/2015-08-Understanding-LSTMs/>`__
    is about LSTMs specifically but also informative about RNNs in
    general
+-  장단기네트워(LSTM)이해하기
+   <https://colah.github.io/posts/2015-08-Understanding-LSTMs/>`__
+   는 LSTM의 특징적인 그러나 일반적인 RNN에 있어서의 유용성에 대해서이다.
 
 I also suggest the previous tutorial, :doc:`/intermediate/char_rnn_classification_tutorial`
-
+또한 이저의 튜토리얼을 제안한다. :doc:`/intermediate/char_rnn_classification_tutorial`
 
 Preparing the Data
+데이터 준비하기
 ==================
 
 .. Note::
@@ -69,10 +97,18 @@ Preparing the Data
    `here <https://download.pytorch.org/tutorial/data.zip>`_
    and extract it to the current directory.
 
+.. 노트::
+    여기서 데이터를 다운받으세요.
+    <https://download.pytorch.org/tutorial/data.zip>`_
+    그리고 현재 디렉토리에서 압축해제하세요.
+    
 See the last tutorial for more detail of this process. In short, there
 are a bunch of plain text files ``data/names/[Language].txt`` with a
 name per line. We split lines into an array, convert Unicode to ASCII,
-and end up with a dictionary ``{language: [names ...]}``.
+and end up with a dictionary ``{language: [names ...]}``. 
+이 과정의 더 자세함을 위해서 지난 튜토리얼을 보세요. 줄이면, 거기에 일반적인 텍스트 파일 몇개가 있습니다. 
+``data/names/[Language].txt`` 라인별로 이름이 기재된.
+라인을 행(array)로 나눠서, 유니코드에서 아스키코드(ASCII)로 전환한뒤, 딕셔너리형태로 끝냅니다. ``{language: [names ...]}``. 
 
 """
 from __future__ import unicode_literals, print_function, division
@@ -88,6 +124,7 @@ n_letters = len(all_letters) + 1 # Plus EOS marker
 def findFiles(path): return glob.glob(path)
 
 # Turn a Unicode string to plain ASCII, thanks to https://stackoverflow.com/a/518232/2809427
+# 유니코드 문자를 일반 아스키코드로 전환, https://stackoverflow.com/a/518232/2809427에 감사합니다. 
 def unicodeToAscii(s):
     return ''.join(
         c for c in unicodedata.normalize('NFD', s)
@@ -122,6 +159,7 @@ print(unicodeToAscii("O'Néàl"))
 
 ######################################################################
 # Creating the Network
+# 네트워크 생성하기
 # ====================
 #
 # This network extends `the last tutorial's RNN <#Creating-the-Network>`__
