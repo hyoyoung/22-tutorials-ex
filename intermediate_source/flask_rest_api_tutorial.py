@@ -1,36 +1,33 @@
 # -*- coding: utf-8 -*-
 """
-Deploying PyTorch in Python via a REST API with Flask
+Flask와 REST API를 이용한 파이토치 배포
 ========================================================
 **Author**: `Avinash Sajjanshetty <https://avi.im>`_
+**번역**: 유연승
 
-In this tutorial, we will deploy a PyTorch model using Flask and expose a
-REST API for model inference. In particular, we will deploy a pretrained
-DenseNet 121 model which detects the image.
+이 튜토리얼에서는 Flask를 사용하여 파이토치 모델을 배포하고 모델의 추론결과룰 REST API로 보여줍니다.
+이미지를 디텍션하는 사전학습된 DenseNet 121 모델을 배포해봅시다.
 
-.. tip:: All the code used here is released under MIT license and is available on `Github <https://github.com/avinassh/pytorch-flask-api>`_.
+.. tip:: 여기서 사용한 모든 코드는 MIT 라이선스로 공개되고 `Github <https://github.com/avinassh/pytorch-flask-api>`_ 에서 확인하실 수 있습니다.
 
-This represents the first in a series of tutorials on deploying PyTorch models
-in production. Using Flask in this way is by far the easiest way to start
-serving your PyTorch models, but it will not work for a use case
-with high performance requirements. For that:
+이는 PyTorch 모델을 상용화로 배포하는 튜토리얼 중 첫 번째입니다.
+이러한 배포방법으로 플라스크를 사용하는 것이 PyTorch 모델의 서비스를 시작하는 가장 쉬운 방법이지만 고성능 요구 사항이 있는 사용 사례에서는 작동하지 않습니다.
+다음을 참고하세요.
 
-    - If you're already familiar with TorchScript, you can jump straight into our
-      `Loading a TorchScript Model in C++ <https://pytorch.org/tutorials/advanced/cpp_export.html>`_ tutorial.
+    - TorchScript에 대해 이미 잘 알고 계시다면 바로 `Loading a TorchScript Model in C++ <https://pytorch.org/tutorials/advanced/cpp_export.html>`_를 들어가보세요.
 
-    - If you first need a refresher on TorchScript, check out our
-      `Intro a TorchScript <https://pytorch.org/tutorials/beginner/Intro_to_TorchScript_tutorial.html>`_ tutorial.
+    - TorchScript에 대한 교육이 먼저 필요하다면 `Intro a TorchScript <https://pytorch.org/tutorials/beginner/Intro_to_TorchScript_tutorial.html>`_부터 보세요.
+
 """
 
 
 ######################################################################
-# API Definition
+# API 정의
 # --------------
 #
-# We will first define our API endpoints, the request and response types. Our
-# API endpoint will be at ``/predict`` which takes HTTP POST requests with a
-# ``file`` parameter which contains the image. The response will be of JSON
-# response containing the prediction:
+# 먼저 API 앤드포인트와 요청 및 응답 유형을 정의할 것입니다.
+# 우리의 API 앤드포인트는 이미지를 포함하는 "file" 매개 변수를 HTTP POST로 "/predict"에 요청할 것입니다.
+# 이에대한 응답은 아래와 같은 예측을 포함한 JSON으로 응답할 것입니다
 #
 # ::
 #
@@ -39,10 +36,10 @@ with high performance requirements. For that:
 #
 
 ######################################################################
-# Dependencies
+# 의존성
 # ------------
 #
-# Install the required dependenices by running the following command:
+# 아래의 명령어를 실행하여 필요한 라이브러리를 설치하세요:
 #
 # ::
 #
