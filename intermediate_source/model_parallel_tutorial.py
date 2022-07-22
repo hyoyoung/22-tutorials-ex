@@ -1,22 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Single-Machine Model Parallel Best Practices
+단일 컴퓨터의 모델 병렬화 우수 사례 
 ================================
-**Author**: `Shen Li <https://mrshenli.github.io/>`_
+**Author**: `Shen Li <https://mrshenli.github.io/>`
+**번역자**: '이동환 <dhlee.work@gmail.com>'
 
-Model parallel is widely-used in distributed training
-techniques. Previous posts have explained how to use
-`DataParallel <https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html>`_
-to train a neural network on multiple GPUs; this feature replicates the
-same model to all GPUs, where each GPU consumes a different partition of the
-input data. Although it can significantly accelerate the training process, it
-does not work for some use cases where the model is too large to fit into a
-single GPU. This post shows how to solve that problem by using **model parallel**,
-which, in contrast to ``DataParallel``, splits a single model onto different GPUs,
-rather than replicating the entire model on each GPU (to be concrete, say a model
-``m`` contains 10 layers: when using ``DataParallel``, each GPU will have a
-replica of each of these 10 layers, whereas when using model parallel on two GPUs,
-each GPU could host 5 layers).
+모델 병렬화는 분산 학습 기법에서 광범위하게 사용된다. 이전 포스트
+`DataParallel <https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html>`에서
+다중 GPU를 이용하여 신경망 네트워크 학습을 어떻게 하는지 설명하였다. 
+`DataParallel` 포스트에서는 모든 GPU에 동일한 모델을 복제하며 각 GPU는 서로다른 입력 데이터의 파티션을 받는다.   
+이러한 방법은 학습 과정을 가속시킬 수 있지만 모델이 너무 커서 단일 지피유에 맞지 않는 일부 사례에서는 작동하지 않는다. 
+
+이 포스트는 ``DataParallel``과 대비하여 단일 모델을 분리하여 여러 GPU에 분산시키는 모델 병렬(model parallel)을 사용하여 
+어떻게 `DataParallel`의 문제를 해결할 수 있는지 설명한다. 즉, 모델 m이 10개의 층으로 구성되었을때 ``DataParallel``
+를 사용한다면 각 GPU는 10개의 레이어를 갖는 모델 m의 복제를 갖는 반면 2개 GPU의 모델 병렬(model parallel)을 사용한 경우 
+경우 각 지피유는 모델 m의 레이어(layer)를 5개씩 나누어 사용할 수 있다.
 
 The high-level idea of model parallel is to place different sub-networks of a
 model onto different devices, and implement the ``forward`` method accordingly
