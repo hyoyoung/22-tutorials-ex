@@ -13,18 +13,18 @@
 
 PyTorch는 신경망(neural network)들을 생성 및 학습시키는 것을 도와주기 위해서 `torch.nn <https://pytorch.org/docs/stable/nn.html>`_ , `torch.optim <https://pytorch.org/docs/stable/optim.html>`_ , `Dataset <https://pytorch.org/docs/stable/data.html?highlight=dataset#torch.utils.data.Dataset>`_ , `DataLoader <https://pytorch.org/docs/stable/data.html?highlight=dataloader#torch.utils.data.DataLoader>`_ 와 같은 잘 디자인된 모듈과 클래스들을 제공합니다. 
 여러분의 문제상황에서 성능을 최대한 사용하고 커스터마이즈 하기 위해서는, 어떻게 정확하게 동작하는지 확실하게 이해할 필요가 있습니다.
-이해를 발전시키기 위해 모델의 어떤 특징(feature)도 사용하지 않고 MNIST 데이터 셋에서 기본적인 신경망을 학습시켜 보겠습니다;
+이해를 발전시키기 위해 모델의 어떤 특징(feature)도 사용하지 않고 MNIST 데이터셋에서 기본적인 신경망을 학습시켜 보겠습니다;
 처음에는 가장 기본적인 PyTorch 텐서(tensor) 함수만을 사용하겠습니다.
 그리고나서 ``torch.nn`` , ``torch.optim`` , ``Dataset`` , 또는 ``DataLoader`` 에서 하나의 특징을 점차 추가하여 각 부분이 어떤 역할을 하는지 그리고 이것이 어떻게 코드를 보다 간결하게 또는 보다 유연하게 만드는지를 보여줄 것입니다.
 
-**이 튜토리얼은 여러분이 PyTorch가 설치되있고 기초 텐서 연산에 익숙하다고 가정합니다.**
-(Numpy 배열 연산이 익숙하시다면, 여기에서 사용되는 PyTorch 텐서 연산도 거의 동일하다는 것을 알게될 것입니다.)
+**이 튜토리얼은 PyTorch가 이미 설치되어있고, 기초 텐서 연산에 익숙하다는 것을 가정합니다.**
+(Numpy 배열 연산이 익숙하시다면, 여기에서 사용되는 PyTorch 텐서 연산도 거의 동일하다는 것을 알게 될 것입니다.)
 
 MNIST 데이터 준비
 ----------------
 
 손으로 쓴 숫자의 (0부터 9까지) 흑백이미지로 구성된 기본 `MNIST <http://deeplearning.net/data/mnist/>`_ 데이터셋을 사용합니다.
-경로를 다루기 위해 `pathlib <https://docs.python.org/3/library/pathlib.html>`_ 를 사용하고(Python3의 표준 라이브러리의 일부), 그리고 데이터를 다운로드하는데 `requests <http://docs.python-requests.org/en/master/>`_ 를 사용합니다.
+경로를 설정하기 위해 `pathlib <https://docs.python.org/3/library/pathlib.html>`_ 를 사용하고(Python3의 표준 라이브러리의 일부), 그리고 데이터를 다운로드하는데 `requests <http://docs.python-requests.org/en/master/>`_ 를 사용합니다.
 모듈을 사용할 때만 임포트(import) 할 것이므로, 각각의 지점에서 정확히 어떤 모듈이 사용되는지 볼 수 있습니다.
 """
 
