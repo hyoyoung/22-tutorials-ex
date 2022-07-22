@@ -1,33 +1,33 @@
-PyTorch Vulkan Backend User Workflow
-====================================
+PyTorch Vulkan 백엔드 사용자 워크플로
+============================================
 
 **Author**: `Ivan Kobzarev <https://github.com/IvanKobzarev>`_
 
-Introduction
-------------
-PyTorch 1.7 supports the ability to run model inference on GPUs that support the Vulkan graphics and compute API. The primary target devices are mobile GPUs on Android devices. The Vulkan backend can also be used on Linux, Mac, and Windows desktop builds to use Vulkan devices like Intel integrated GPUs. This feature is in the prototype stage and is subject to change.
+소개
+------
+PyTorch 1.7은 Vulkan 그래픽과 컴퓨팅 API를 지원하는 GPU에서 모델 추론(inference)을 실행하는 것을 지원합니다. 주 목표 디바이스는 안드로이드 장치의 모바일 GPU입니다. Vulkan 백엔드는 Vulkan을 지원하는 Intel 통합 GPU와 같은 장치를 사용해 Linux, Mac 그리고 Windows 데스크톱 빌드에서도 사용할 수 있습니다. 이 기능은 프로토타입 단계이며 변경될 수 있습니다.
 
-Building PyTorch with Vulkan backend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Vulkan backend is not included by default. The main switch to include Vulkan backend is cmake option ``USE_VULKAN``, that can be set by environment variable ``USE_VULKAN``.
+PyTorch에서 Vulkan 백엔드 빌드하기
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Vulkan 백엔드는 기본적으로 포함되어 있지 않습니다. Vulkan 백엔드를 포함하는 cmake 옵션은 ``USE_VULKAN`` 이고, 환경 변수 ``USE_VULKAN`` 에 의해 설정될 수 있습니다.
 
-To use PyTorch with Vulkan backend, we need to build it from source with additional settings. Checkout the PyTorch source code from GitHub master branch.
+PyTorch에서 Vulkan 백엔드를 사용하기 위해서는, 소스에서 추가적인 설정을 하여 빌드해야 합니다. PyTorch 소스 코드를 Github master 브랜치에서 확인하세요.
 
-Optional usage of vulkan wrapper
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Vulkan 래퍼(wrapper)의 선택적 사용
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-By default, Vulkan library will be loaded at runtime using the vulkan_wrapper library. If you specify the environment variable ``USE_VULKAN_WRAPPER=0`` libvulkan will be linked directly.
+기본적으로, Vulkan 라이브러리는 런타임이 vulkan_wrapper 라이브러리를 사용할 때 로딩됩니다. 만약 ``USE_VULKAN_WRAPPER=0`` 으로 환경 변수를 특정한다면 libvulkan이 직접 연결됩니다.
 
-Desktop build
-^^^^^^^^^^^^^
+데스크톱 빌드
+^^^^^^^^^^^^^^^^^
 
 Vulkan SDK
 ^^^^^^^^^^
-Download VulkanSDK from https://vulkan.lunarg.com/sdk/home and set environment variable ``VULKAN_SDK``
+VulkanSDK를 https://vulkan.lunarg.com/sdk/home 에서 다운로드 하고 ``VULKAN_SDK`` 환경 변수를 설정합니다.
 
-Unpack VulkanSDK to ``VULKAN_SDK_ROOT`` folder, install VulkanSDK following VulkanSDK instructions for your system.
+VulkanSDK를 ``VULKAN_SDK_ROOT`` 폴더에 압축 해제하고, 아래 VulkanSDK 설치법을 따라 VulkanSDK를 시스템에 설치합니다.
 
-For Mac:
+Mac용:
 
 ::
 
@@ -36,33 +36,33 @@ For Mac:
     sudo python install_vulkan.py
 
 
-Building PyTorch:
+PyTorch 빌드하기:
 
-For Linux:
+Linux용:
 
 ::
 
     cd PYTORCH_ROOT
     USE_VULKAN=1 USE_VULKAN_SHADERC_RUNTIME=1 USE_VULKAN_WRAPPER=0 python setup.py install
 
-For Mac:
+Mac용:
 
 ::
 
     cd PYTORCH_ROOT
     USE_VULKAN=1 USE_VULKAN_SHADERC_RUNTIME=1 USE_VULKAN_WRAPPER=0 MACOSX_DEPLOYMENT_TARGET=10.9 CC=clang CXX=clang++ python setup.py install
 
-After successful build, open another terminal and verify the version of installed PyTorch.
+성공적으로 빌드한 이후, 다른 터미널 창을 열어 설치된 PyTorch 버전을 확인합니다.
 
 ::
 
     import torch
     print(torch.__version__)
 
-At the time of writing of this recipe, the version is 1.8.0a0+41237a4. You might be seeing different numbers depending on when you check out the code from master, but it should be greater than 1.7.0.
+지금 이 튜토리얼을 작성하는 기준으로, 버전은 1.8.0a0+41237a4입니다. Master 코드를 확인한 시점에 따라 다른 숫자를 볼 수도 있지만, 1.7.0 이상이어야 합니다.
 
 
-Android build
+Android 빌드
 ^^^^^^^^^^^^^
 
 To build LibTorch for android with Vulkan backend for specified ``ANDROID_ABI``.
